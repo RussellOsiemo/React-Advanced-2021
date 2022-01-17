@@ -5,21 +5,30 @@ import { data } from '../../../data';
 
 const PropDrilling = () => {
   const [people, setPeople] = useState(data);
-  return <section>
+  const removePerson = (id) =>{
+    setPeople((people)=>{
+      return people.filter((person) => person.id!== id);
+    })
+  }
+ return <section>
     <h3>prop Drilling</h3>
-  <List  people={people}/>
+  <List  people={people} removePerson ={removePerson}/>
   </section>;
 };
-const List= ({people}) =>{
+const List= ({people, removePerson}) =>{
  return <>
  {people.map((person) =>{
-   return <SinglePerson  key ={person.id}/>
+   return <SinglePerson 
+    key ={person.id} 
+    {...person}
+    removePerson ={removePerson}/>;
  })}</>
 }
-const SinglePerson = ({id,name}) =>{
+const SinglePerson = ({id,name, removePerson}) =>{
 return (
   <div className='item'>
-    <h4>Single Item</h4>
+    <h4>{name}</h4>
+    <button onClick={()=>removePerson(id)}>Remove</button>
   </div>
 )
 }
